@@ -11,4 +11,10 @@ Luma Grayscale has a specific formula for a more enhanced gray.
 
 ## Color Mask
 This feature just multiplies all RGB pixels with a specific (R, G, B) value from the user. This looks like a filter of some color the user gave over the image.
-This feature will not work as expected if any of the values from (R, G, B) is not in the (0, 1) range.
+
+## Flip Image
+This feature flips the image on the X or Y axis.
+
+## Crop Image
+This feature crops an area of (width, height) from the image from a certain point (x, y). Both (x, y) and (width, height) are given by the user.
+If the cropped image is going over the image of the original image, the rest will just be black.
