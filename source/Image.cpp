@@ -87,6 +87,64 @@ void Image::colorMask(double r, double g, double b)
 		}
 	}
 }
+void Image::flipX()
+{
+	uint8_t tmp[4];
+	uint8_t* px1;
+	uint8_t* px2;
+
+	for(int y=0; y < height; y++)
+		for (int x = 0; x <= width / 2; x++)
+		{
+			px1 = &data[(x + y * width) * channels];
+			px2 = &data[((width - 1 - x) + y*width) * channels];
+
+			memcpy(tmp, px1, channels);
+			memcpy(px1, px2, channels);
+			memcpy(px2, tmp, channels);
+		}
+}
+void Image::flipY()
+{
+	uint8_t tmp[4];
+	uint8_t* px1;
+	uint8_t* px2;
+
+	for (int x = 0; x < width; x++)
+		for (int y = 0; y <= height/ 2; y++)
+		{
+			px1 = &data[(x + y * width) * channels];
+			px2 = &data[(x +(height - 1 - y) * width) * channels];
+
+			memcpy(tmp, px1, channels);
+			memcpy(px1, px2, channels);
+			memcpy(px2, tmp, channels);
+		}
+}
+void Image::crop(int cx, int cy, int cropped_width, int cropped_height)
+{
+	size = cropped_width * cropped_height * channels;
+	uint8_t* new_data = new uint8_t[size];
+	memset(new_data, 0, size);
+
+	//copy cropped data to new_data
+	for (int y = 0; y < cropped_height; y++)
+	{
+		if (y + cropped_height > height) break;
+		for (int x = 0; x < cropped_width; x++)
+		{
+			if (x + cropped_width > width) break;
+			memcpy(&new_data[(x + y * cropped_width) * channels], &data[((x + cx) + (y + cy) * width) * channels], channels);
+		}
+	}
+
+	width = cropped_width;
+	height = cropped_height;
+
+	delete[] data;
+	data = new_data;
+	new_data = nullptr;
+}
 
 Image::Image(const char* filename)
 {

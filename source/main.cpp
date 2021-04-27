@@ -23,6 +23,23 @@ int main()
 	photo2.write("PurplePhoto.jpg");
 	copy2.write("CyanPhoto.jpg");
 
-	//More features are coming...
+	std::cout << std::endl;
+	
+	Image photo3("Photo.jpg");
+	Image copy3 = photo3;
+	photo3.flipX();
+	copy3.flipY();
+
+	photo3.write("flippedX.jpg");
+	copy3.write("flippedY.jpg");
+
+	std::cout << std::endl;
+
+	//Crop feature
+	Image photo4("Photo.jpg");
+	photo4.crop(1500, 700, 1000, 700);
+	photo4.write("cropped.jpg");
+
+
 	return 0;
 }

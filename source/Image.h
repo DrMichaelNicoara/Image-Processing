@@ -23,6 +23,9 @@ public:
 	void grayscale_avg();
 	void grayscale_lum();
 	void colorMask(double r, double g, double b);
+	void flipX();
+	void flipY();
+	void crop(int x, int y, int w, int h);
 
 	bool write(const char* filename);
 	Image(const char* filename);
