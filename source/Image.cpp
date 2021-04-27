@@ -74,8 +74,20 @@ void Image::grayscale_lum()
 		}
 	}
 }
+
+double to_subunit(double x)
+{
+	if (x > 1) x = 1;
+	else if (x < 0) x = 0;
+	return x;
+}
 void Image::colorMask(double r, double g, double b)
 {
+	// (R, G, B) values must be between 0 and 1
+	to_subunit(r);
+	to_subunit(g);
+	to_subunit(b);
+
 	if (channels < 3)printf("The image has less than 3 channels.\n");
 	else
 	{
