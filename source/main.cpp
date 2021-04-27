@@ -25,6 +25,7 @@ int main()
 
 	std::cout << std::endl;
 	
+	//Flip Image feature
 	Image photo3("Photo.jpg");
 	Image copy3 = photo3;
 	photo3.flipX();
