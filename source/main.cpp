@@ -23,5 +23,6 @@ int main()
 	photo2.write("PurplePhoto.jpg");
 	copy2.write("CyanPhoto.jpg");
 
+	//More features are coming...
 	return 0;
 }
