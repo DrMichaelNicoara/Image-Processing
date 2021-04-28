@@ -4,7 +4,7 @@
 int main()
 {
 	//Grayscale feature
-	Image photo("Photo.jpg");
+	Image photo("photo.jpg");
 	Image copy = photo;
 	photo.grayscale_avg(); // Basic grayscale
 	copy.grayscale_lum(); // Enhanced grayscale
@@ -15,7 +15,7 @@ int main()
 	std::cout << std::endl;
 
 	//Color Mask feature
-	Image photo2("Photo.jpg");
+	Image photo2("photo.jpg");
 	Image copy2 = photo2;
 	photo2.colorMask(1, 0, 1);
 	copy2.colorMask(0, 1, 1);
@@ -26,7 +26,7 @@ int main()
 	std::cout << std::endl;
 	
 	//Flip Image feature
-	Image photo3("Photo.jpg");
+	Image photo3("photo.jpg");
 	Image copy3 = photo3;
 	photo3.flipX();
 	copy3.flipY();
@@ -37,7 +37,7 @@ int main()
 	std::cout << std::endl;
 
 	//Crop feature
-	Image photo4("Photo.jpg");
+	Image photo4("photo.jpg");
 	photo4.crop(1500, 700, 1000, 700);
 	photo4.write("cropped.jpg");
 
