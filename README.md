@@ -18,3 +18,5 @@ This feature flips the image on the X or Y axis.
 ## Crop Image
 This feature crops an area of (width, height) from the image from a certain point (x, y). Both (x, y) and (width, height) are given by the user.
 If the cropped image is going over the image of the original image, the rest will just be black.
+
+edit
