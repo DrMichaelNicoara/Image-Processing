@@ -15,7 +15,7 @@ bool Image::write(const char* filename)
 	switch (getFileType(filename))
 	{
 	case PNG:
-		success = stbi_write_png(filename, width, height, channels, data, width*channels);
+		success = stbi_write_png(filename, width, height, channels, data, width * channels);
 		break;
 	case JPG:
 		success = stbi_write_jpg(filename, width, height, channels, data, 100);
@@ -49,7 +49,7 @@ ImageType Image::getFileType(const char* filename)
 	}
 	return JPG;
 }
-	 
+
 void Image::grayscale_avg()
 {
 	if (channels < 3)printf("The image has less than 3 channels.\n");
@@ -94,8 +94,8 @@ void Image::colorMask(double r, double g, double b)
 		for (int i = 0; i < size; i += channels)
 		{
 			data[i] *= r;
-			data[i+1] *= g;
-			data[i+2] *= b;
+			data[i + 1] *= g;
+			data[i + 2] *= b;
 		}
 	}
 }
@@ -105,11 +105,11 @@ void Image::flipX()
 	uint8_t* px1;
 	uint8_t* px2;
 
-	for(int y=0; y < height; y++)
+	for (int y = 0; y < height; y++)
 		for (int x = 0; x <= width / 2; x++)
 		{
 			px1 = &data[(x + y * width) * channels];
-			px2 = &data[((width - 1 - x) + y*width) * channels];
+			px2 = &data[((width - 1 - x) + y * width) * channels];
 
 			memcpy(tmp, px1, channels);
 			memcpy(px1, px2, channels);
@@ -123,10 +123,10 @@ void Image::flipY()
 	uint8_t* px2;
 
 	for (int x = 0; x < width; x++)
-		for (int y = 0; y <= height/ 2; y++)
+		for (int y = 0; y <= height / 2; y++)
 		{
 			px1 = &data[(x + y * width) * channels];
-			px2 = &data[(x +(height - 1 - y) * width) * channels];
+			px2 = &data[(x + (height - 1 - y) * width) * channels];
 
 			memcpy(tmp, px1, channels);
 			memcpy(px1, px2, channels);
