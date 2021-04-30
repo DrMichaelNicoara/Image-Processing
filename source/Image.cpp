@@ -6,12 +6,14 @@
 
 bool Image::read(const char* filename)
 {
+	// stbi_load() reads the header data of an image
+	// returns an unsigned char* at the beggining of the image data
 	data = stbi_load(filename, &width, &height, &channels, 0);
-	return data;
+	return data; // data = NULL if reading fails
 }
 bool Image::write(const char* filename)
 {
-	int success = 0;
+	bool success; // success of writing image to file
 	switch (getFileType(filename))
 	{
 	case PNG:
@@ -26,16 +28,18 @@ bool Image::write(const char* filename)
 	case TGA:
 		success = stbi_write_tga(filename, width, height, channels, data);
 		break;
+	default :
+		success = false;
 	}
 
-	if (success)printf("Image %s was saved to file.\n", filename);
+	if (success) printf("Image %s was saved to file.\n", filename);
 	else printf("Image %s could not be saved to file.\n", filename);
 
 	return success;
 }
 ImageType Image::getFileType(const char* filename)
 {
-	const char* ext = strrchr(filename, '.');
+	const char* ext = strrchr(filename, '.'); // returns extension of filename
 	if (ext)
 	{
 		if (strcmp(ext, ".jpg") == 0 || strcmp(ext, ".jpeg") == 0)
@@ -52,9 +56,11 @@ ImageType Image::getFileType(const char* filename)
 
 void Image::grayscale_avg()
 {
-	if (channels < 3)printf("The image has less than 3 channels.\n");
+	if (channels < 3) printf("The image has less than 3 channels.\n");
 	else
 	{
+		// Computes the average of (R, G, B) for each pixel and makes all 3 values equal to the average
+		// => grayscale effect
 		for (int i = 0; i < size; i += channels)
 		{
 			int gray = (data[i] + data[i + 1] + data[i + 2]) / 3; // (r+g+b)/3
@@ -67,6 +73,7 @@ void Image::grayscale_lum()
 	if (channels < 3)printf("The image has less than 3 channels.\n");
 	else
 	{
+		// Each pixel = 0.2126 * R + 0.7152 * G + 0.0722 * B of that pixel
 		for (int i = 0; i < size; i += channels)
 		{
 			int gray = 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2];
@@ -77,6 +84,7 @@ void Image::grayscale_lum()
 
 double to_subunit(double x)
 {
+	// Makes sure the number is between 0 and 1
 	if (x > 0.99) x = 1.0;
 	else if (x < 0.0) x = 0.0;
 	return x;
@@ -88,9 +96,10 @@ void Image::colorMask(double r, double g, double b)
 	to_subunit(g);
 	to_subunit(b);
 
-	if (channels < 3)printf("The image has less than 3 channels.\n");
+	if (channels < 3) printf("The image has less than 3 channels.\n");
 	else
 	{
+		// Multiplies all pixels by the given multiplier (r, g, b)
 		for (int i = 0; i < size; i += channels)
 		{
 			data[i] *= r;
@@ -101,7 +110,7 @@ void Image::colorMask(double r, double g, double b)
 }
 void Image::flipX()
 {
-	uint8_t tmp[4];
+	uint8_t tmp[4]; // There may be 4 channels (R, G, B, A)
 	uint8_t* px1;
 	uint8_t* px2;
 
@@ -118,7 +127,7 @@ void Image::flipX()
 }
 void Image::flipY()
 {
-	uint8_t tmp[4];
+	uint8_t tmp[4]; // There may be 4 channels (R, G, B, A)
 	uint8_t* px1;
 	uint8_t* px2;
 
@@ -137,18 +146,17 @@ void Image::crop(int cx, int cy, int cropped_width, int cropped_height)
 {
 	size = cropped_width * cropped_height * channels;
 	uint8_t* new_data = new uint8_t[size];
-	memset(new_data, 0, size);
+
+	// Limits the crop area to the image
+	if (cx + cropped_width > width) cropped_width = width - cx;
+	if (cy + cropped_height > height) cropped_height = height - cy;
 
 	//copy cropped data to new_data
 	for (int y = 0; y < cropped_height; y++)
-	{
-		if (y + cropped_height > height) break;
 		for (int x = 0; x < cropped_width; x++)
-		{
-			if (x + cropped_width > width) break;
-			memcpy(&new_data[(x + y * cropped_width) * channels], &data[((x + cx) + (y + cy) * width) * channels], channels);
-		}
-	}
+			memcpy(&new_data[(x + y * cropped_width) * channels],
+				   &data[((x + cx) + (y + cy) * width) * channels],
+				   channels);
 
 	width = cropped_width;
 	height = cropped_height;
